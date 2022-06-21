@@ -1,4 +1,4 @@
-# `mobius-swap-example`
+# `mobi-swap-example`
 
 Fetches pool data and computes swap prices.
 
@@ -6,7 +6,7 @@ Fetches pool data and computes swap prices.
 
 ```bash
 yarn install
-yarn ts-node src/fetchAllPrices
+yarn ts-node src/fetchAllPrices.ts
 ```
 
 ## License
