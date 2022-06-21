@@ -1,7 +1,10 @@
 import { ChainId, Multicall } from "@dahlia-labs/celo-contrib";
 import { StablePools } from "@dahlia-labs/mobius-config-registry";
 import type { IExchangeInfo } from "@dahlia-labs/stableswap-sdk";
-import { calculateSwapPrice } from "@dahlia-labs/stableswap-sdk";
+import {
+  calculateEstimatedSwapOutputAmount,
+  calculateSwapPrice,
+} from "@dahlia-labs/stableswap-sdk";
 import { Percent, TokenAmount } from "@dahlia-labs/token-utils";
 import type { Interface, Result } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
@@ -193,10 +196,20 @@ const fetchAllPrices = async (): Promise<void> => {
 
     const swapPrice = calculateSwapPrice(exchangeInfo).asFraction;
 
+    const testAmount = TokenAmount.parse(pool.pool.tokens[1], "10000");
+    const testOutput = calculateEstimatedSwapOutputAmount(
+      exchangeInfo,
+      testAmount
+    );
+
     console.log(
       `${pool.name} pool has price ${swapPrice.toSignificant(4)} ${
         pool.pool.tokens[1].symbol
-      } per ${pool.pool.tokens[0].symbol}`
+      } per ${pool.pool.tokens[0].symbol} | 10,000 ${
+        pool.pool.tokens[1].symbol
+      } -> ${testOutput.outputAmount.toSignificant(4, {
+        groupSeparator: ",",
+      })} ${pool.pool.tokens[0].symbol}`
     );
   });
 };
